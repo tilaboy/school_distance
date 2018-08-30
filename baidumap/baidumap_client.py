@@ -7,19 +7,22 @@ class BuiduMapClient(object):
         if not ak:
             raise ValueError("Error: a valid ak is required")
 
-        self.ak = 'RNYTWuvcC1M8PWYPqerbbQ0V8bTX6gRY'
+        self.ak = ak
         self.domain = domain
         self.output = 'json'
 
     def get(self, action='place', sub_action='search', params=None):
-        request_url = generate_url(action, sub_action, params)
+        request_url = self.generate_url(action, sub_action, params)
         response = requests.get(request_url).json()
 
         status = response['status']
         if status != 0:
-            raise exceptions.StatusError(action, sub_action, status)
-        else:
-            print("{}/{} suceed on {}".format(action, sub_action, request_url))
+            print ("ERROR:{}".format(status))
+            print("ERROR:{}".format(response))
+            response = None
+            #raise exceptions.StatusError(action, sub_action, status)
+        #else:    
+            #print("{}/{} suceed on {}".format(action, sub_action, request_url))
         return response
 
     def generate_url(self, action='place', sub_action='search', params=None):
